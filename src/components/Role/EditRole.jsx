@@ -3,11 +3,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import { CreateRole, GetRole, UpdateRole } from "../../services/role-service";
 import toast from "react-hot-toast";
+import { GetPermissions } from "../../services/auth-service";
+import { allPermissions } from "../../redux/slices/authSlice";
+import { useDispatch } from "react-redux";
 function EditRole() {
   const { id } = useParams();
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -28,6 +31,15 @@ function EditRole() {
           .then((res) => {
             if (res.data) {
               navigate("/roles");
+              GetPermissions(token)
+                .then((res) => {
+                  console.log("vijsdckjsd: ", res);
+                  // setPermissions(res?.data?.permissions)
+                  dispatch(allPermissions(res?.data?.permissions));
+                })
+                .catch((e) => {
+                  toast.error(e?.response?.data.message);
+                });
             }
           })
           .catch((e) => {
