@@ -151,36 +151,36 @@ function index() {
               <Route path="/" element={<Home />} />
               <Route path="/profile" element={<UserProfile />} />
 
-              {/* <Route path="/" element={<UsersAccess />}> */}
+              <Route path="/" element={<UsersAccess />}>
                 <Route path="/users" element={<AllUser />} />
                 <Route path="/add-user" element={<EditUser />} />
                 <Route path="/edit-user/:id" element={<EditUser />} />
-              {/* </Route> */}
+              </Route>
 
-              {/* <Route path="/" element={<RolesAccess />}> */}
+              <Route path="/" element={<RolesAccess />}>
                 <Route path="/roles" element={<AllRoles />} />
                 <Route path="/add-role" element={<EditRole />} />
                 <Route path="/edit-role/:id" element={<EditRole />} />
-              {/* </Route> */}
+              </Route>
 
-              {/* <Route path="/" element={<EmailAccess />}> */}
+              <Route path="/" element={<EmailAccess />}>
                 <Route path="/emails" element={<AllEmails />} />
                 <Route path="/add-email" element={<EditEmail />} />
                 <Route path="/edit-email/:id" element={<EditEmail />} />
-              {/* </Route> */}
+              </Route>
 
-              {/* <Route path="/" element={<GeneralSettingsAccess />}> */}
+              <Route path="/" element={<GeneralSettingsAccess />}>
                 <Route path="/general-settings" element={<GeneralSettings />}>
                   <Route path="security" element={<Security />} />
                   <Route path="admin" element={<AdminMedia />} />
                   <Route path="email-setting" element={<EmailSetting />} />
                   <Route path="test-mail" element={<TestMail />} />
-                {/* </Route> */}
+                </Route>
               </Route>
 
-              {/* <Route path="/" element={<LogsAccess />}> */}
+              <Route path="/" element={<LogsAccess />}>
                 <Route path="/logs" element={<Logs />} />
-              {/* </Route> */}
+              </Route>
             </Route>
           </Route>
         </Route>
