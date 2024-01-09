@@ -8,7 +8,8 @@ import Spinner from "../../helper/Spinner";
 function UserProfile() {
   const [userImage, setUserImage] = useState("");
   const [data, setData] = useState({});
-  const [ setLoading] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const [loading,  setLoading] = useState(false);
   const [showSpinner, setShowSpinner] = useState(false);
   const { user } = useSelector((state) => state?.auth);
   const token = localStorage.getItem("token");

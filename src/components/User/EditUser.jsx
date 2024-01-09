@@ -48,27 +48,25 @@ function EditUser() {
         email,
         password,
         phone_no,
-        roles,
+        roles:roles.map((role) => role._id),
       };
+      console.log("data: ", data);
+      console.log("roles: ", roles);
 
       const formDataToSend = new FormData();
       formDataToSend.append("name", data.name);
       formDataToSend.append("email", data.email);
       formDataToSend.append("password", data.password);
       formDataToSend.append("phone_no", data.phone_no);
-      // formDataToSend.append("roles", data.roles.join(','));
-      // formDataToSend.append("avatar", formData.avatar);
+      // formDataToSend.append("roles", data.roles);
       data.roles.forEach((role) => formDataToSend.append("roles", role));
-      if (formData.avatar) {
-        formDataToSend.append("avatar", formData.avatar);
-      }
-
       if (id) {
         UpdateUser(token, id, formDataToSend)
           .then((res) => {
             if (res.data) {
               GetPermissions(token)
                 .then((res) => {
+                  console.log("res: sdfsfsdfsd", res);
                   // setPermissions(res?.data?.permissions)
                   dispatch(allPermissions(res?.data?.permissions));
                 })
@@ -95,26 +93,27 @@ function EditUser() {
     },
   });
   function handlePermission(permissionType) {
-    const isPermissionChecked = formik.values.roles.includes(permissionType);
-
+    const isPermissionChecked = formik.values.roles
+      .map((r) => r.name)
+      .includes(permissionType);
+  
     if (isPermissionChecked) {
       // If permission is already in the array, remove it
       formik.setFieldValue(
         "roles",
-        formik.values.roles.filter(
-          (permission) => permission !== permissionType
-        )
+        formik.values.roles.filter((permission) => permission.name !== permissionType)
       );
     } else {
-      formik.setFieldValue("roles", [...formik.values.roles, permissionType]);
+      const newRole = roles.filter((r) => r.name === permissionType)[0]; // Use [0] to get the first matching role
+      formik.setFieldValue("roles", [...formik.values.roles, newRole]);
     }
   }
-
+  
   useEffect(() => {
     if (token && id) {
       GetUser(token, id)
         .then((res) => {
-          console.log("res: ", res);
+          console.log("roles need : ", res);
           if (res.data.avatar) {
             let path = `http://localhost:5000/${res.data.avatar.replace(
               /\\/g,
@@ -126,7 +125,7 @@ function EditUser() {
             name: res.data.name || "",
             email: res.data.email || "",
             password: "",
-            phone_no: res.data.phone_no  || "",
+            phone_no: res.data.phone_no || "",
             roles: res.data.roles || [],
           });
         })
@@ -139,6 +138,7 @@ function EditUser() {
   useEffect(() => {
     AllRoles(token)
       .then((res) => {
+        console.log("res:  all roles", res);
         setRoles(res?.data?.roles);
       })
       .catch((e) => {
@@ -219,9 +219,9 @@ function EditUser() {
                                         id={role?.name}
                                         name={role?.name}
                                         type="checkbox"
-                                        checked={formik.values.roles.includes(
-                                          `${role?.name}`
-                                        )}
+                                        checked={formik.values.roles
+                                          .map((r) => r.name)
+                                          .includes(`${role?.name}`)}
                                         onChange={() =>
                                           handlePermission(role.name)
                                         }
