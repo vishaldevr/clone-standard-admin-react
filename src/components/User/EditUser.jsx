@@ -60,6 +60,9 @@ function EditUser() {
       formDataToSend.append("phone_no", data.phone_no);
       // formDataToSend.append("roles", data.roles);
       data.roles.forEach((role) => formDataToSend.append("roles", role));
+      if (formData.avatar) {
+        formDataToSend.append("avatar", formData.avatar);
+      }
       if (id) {
         UpdateUser(token, id, formDataToSend)
           .then((res) => {
